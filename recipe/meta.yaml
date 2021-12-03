@@ -1,5 +1,5 @@
 {% set name = "go" %}
-{% set version = "1.16.5" %}
+{% set version = "1.17.4" %}
 
 package:
   name: {{ name }}-{{ go_variant_str }}
@@ -8,7 +8,7 @@ package:
 source:
   - folder: go
     url: https://dl.google.com/{{ name }}/go{{ version }}.src.tar.gz
-    sha256: 7bfa7e5908c7cc9e75da5ddf3066d7cbcf3fd9fa51945851325eebc17f50ba80
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b
     patches:
       # Please see patches/README.md for more details
       - patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch
@@ -28,15 +28,15 @@ source:
       - patches/1100-skip-tests-on-defaults-win64-workers.patch                   # [win]
   - folder: go-bootstrap
     url: https://dl.google.com/go/go{{ go_bootstrap_ver }}.linux-amd64.tar.gz     # [x86_64 and linux]
-    sha256: 50fe8e13592f8cf22304b9c4adfc11849a2c3d281b1d7e09c924ae24874c6daa      # [x86_64 and linux]
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b      # [x86_64 and linux]
     url: https://dl.google.com/go/go{{ go_bootstrap_ver }}.darwin-amd64.tar.gz    # [x86_64 and osx]
-    sha256: 43b7b4a4c7f1729132dafbc2452e7838e1808ee759bd11f4f0359c82182589bc      # [x86_64 and osx]
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b      # [x86_64 and osx]
     url: https://dl.google.com/go/go{{ go_bootstrap_ver }}.windows-amd64.zip      # [x86_64 and win]
-    sha256: 55752de84439d0ed744ad681ae0915314516e69091fb86cab9701628ce3a65ff      # [x86_64 and win]
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b      # [x86_64 and win]
     url: https://dl.google.com/go/go{{ go_bootstrap_ver }}.linux-arm64.tar.gz     # [aarch64]
-    sha256: e94329c97b38b5bffe9c18e84e9f521dc995e02df7696897a7626293da9ac593      # [aarch64]
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b      # [aarch64]
     url: https://dl.google.com/go/go{{ go_bootstrap_ver }}.linux-ppc64le.tar.gz   # [ppc64le]
-    sha256: ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca      # [ppc64le]
+    sha256: 4bef3699381ef09e075628504187416565d710660fec65b057edf1ceb187fc4b      # [ppc64le]
 
 build:
   skip: True    # [win32 or linux32]
