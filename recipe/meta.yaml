@@ -33,16 +33,16 @@ source:
     url: https://go.dev/dl/go{{ version }}.windows-amd64.zip  # [win64]
     sha256: 73753620602d4b4469770040c53db55e5dd6af2ad07ecc18f71f164c3224eaad  # [win64]
 
-    url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz  # [osx and build_platform == "osx-arm64"]
-    sha256: 923a377c6fc9a2c789f5db61c24b8f64133f7889056897449891f256af34065f  # [osx and build_platform == "osx-arm64"]
+    url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz # [osx and arm64]
+    sha256: 923a377c6fc9a2c789f5db61c24b8f64133f7889056897449891f256af34065f # [osx and arm64]
 
-    url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz  # [osx and build_platform == "osx-64"]
-    sha256: 828eeca8b5abea3e56921df8fa4b1101380a5ebcfee10acbc8ffe7ec0bf5876b  # [osx and build_platform == "osx-64"]
+    url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz # [osx and x86_64]
+    sha256: 828eeca8b5abea3e56921df8fa4b1101380a5ebcfee10acbc8ffe7ec0bf5876b # [osx and x86_64]
 
 build:
   binary_relocation: false
   detect_binary_files_with_prefix: false
-  force_ignore_keys:   # [win]
+  force_ignore_keys:    # [win]
     - c_compiler        # [win]
     - cxx_compiler      # [win]
     - fortran_compiler  # [win]

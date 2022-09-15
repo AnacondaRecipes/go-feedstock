@@ -24,7 +24,7 @@ export GOROOT=$SRC_DIR/go
 # xref: https://github.com/golang/go/commit/4739c0db47edf99be9ac1f4beab9ea990570dd5f
 if [[ ${CGO_ENABLED} == 1 ]]; then
   if [[ ${CONDA_BUILD_CROSS_COMPILATION:-} == 1 ]]; then
-    if [[ "${build_platform}" == "linux-64" ]]; then
+    if [[ "${target_platform}" == "linux-64" ]]; then
       export CC_FOR_linux_amd64=$(basename $CC_FOR_BUILD)
       export CXX_FOR_linux_amd64=$(basename $CXX_FOR_BUILD)
     fi
@@ -79,8 +79,4 @@ rm -rf "${PREFIX}"/go/test/fixedbugs/issue27836.dir
 # We don't move files, and instead rely on soft-links
 mkdir -p ${PREFIX}/bin && pushd $_
 
-if [[ "${build_platform}" != "${target_platform}" ]]; then
-  find ../go/bin/${GOOS}_${GOARCH} -type f -exec ln -s {} . \;
-else
-  find ../go/bin -type f -exec ln -s {} . \;
-fi
+find ../go/bin -type f -exec ln -s {} . \;

@@ -1,0 +1,43 @@
+diff --git a/recipe/build-base.sh b/recipe/build-base.sh
+index 22425a6..df9b4b0 100644
+--- a/recipe/build-base.sh
++++ b/recipe/build-base.sh
+@@ -24,7 +24,7 @@ export GOROOT=$SRC_DIR/go
+ # xref: https://github.com/golang/go/commit/4739c0db47edf99be9ac1f4beab9ea990570dd5f
+ if [[ ${CGO_ENABLED} == 1 ]]; then
+  if [[ ${CONDA_BUILD_CROSS_COMPILATION:-} == 1 ]]; then
+-  if [[ "${build_platform}" == "linux-64" ]]; then
++  if [[ "${target_platform}" == "linux-64" ]]; then
+    export CC_FOR_linux_amd64=$(basename $CC_FOR_BUILD)
+    export CXX_FOR_linux_amd64=$(basename $CXX_FOR_BUILD)
+   fi
+@@ -79,8 +79,4 @@ rm -rf "${PREFIX}"/go/test/fixedbugs/issue27836.dir
+ # We don't move files, and instead rely on soft-links
+ mkdir -p ${PREFIX}/bin && pushd $_
+
+-if [[ "${build_platform}" != "${target_platform}" ]]; then
+- find ../go/bin/${GOOS}_${GOARCH} -type f -exec ln -s {} . \;
+-else
+- find ../go/bin -type f -exec ln -s {} . \;
+-fi
++find ../go/bin -type f -exec ln -s {} . \;
+diff --git a/recipe/meta.yaml b/recipe/meta.yaml
+index ca49af1..66ed2b6 100644
+--- a/recipe/meta.yaml
++++ b/recipe/meta.yaml
+@@ -30,11 +30,11 @@ source:
+   url: https://go.dev/dl/go{{ version }}.windows-amd64.zip # [win64]
+   sha256: 73753620602d4b4469770040c53db55e5dd6af2ad07ecc18f71f164c3224eaad # [win64]
+
+-  url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz # [osx and build_platform == "osx-arm64"]
+-  sha256: 923a377c6fc9a2c789f5db61c24b8f64133f7889056897449891f256af34065f # [osx and build_platform == "osx-arm64"]
++  url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz # [osx and arm64]
++  sha256: 923a377c6fc9a2c789f5db61c24b8f64133f7889056897449891f256af34065f # [osx and arm64]
+
+-  url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz # [osx and build_platform == "osx-64"]
+-  sha256: 828eeca8b5abea3e56921df8fa4b1101380a5ebcfee10acbc8ffe7ec0bf5876b # [osx and build_platform == "osx-64"]
++  url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz # [osx and x86_64]
++  sha256: 828eeca8b5abea3e56921df8fa4b1101380a5ebcfee10acbc8ffe7ec0bf5876b # [osx and x86_64]
+
+ build:
+  binary_relocation: false
