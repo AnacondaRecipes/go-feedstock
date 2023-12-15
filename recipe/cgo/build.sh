@@ -1,4 +1,4 @@
-set -euf
+set -eufx
 
 # Enable CGO, and set compiler flags to match conda-forge settings
 export CGO_ENABLED=1
@@ -13,7 +13,7 @@ case $(uname -s) in
     ;;
   Linux)
     # We have to disable garbage collection for sections
-    export CGO_LDFLAGS="${CGO_LDFLAGS} -Wl,--no-gc-sections"
+    export CGO_LDFLAGS="${CGO_LDFLAGS} -lrt -Wl,--no-gc-sections"
     ;;
   *)
     echo "Unknown OS: $(uname -s)"
