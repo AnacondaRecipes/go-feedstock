@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euf
+set -eufx
 
 # Test we are running GO under $CONDA_PREFIX
 test "$(which go)" == "${CONDA_PREFIX}/bin/go"
@@ -12,6 +12,10 @@ test "$(go env CGO_ENABLED)" == 1
 # Print diagnostics
 go env
 
+# Ensure runtime/cgo is not stale.
+# This will be assumed as stale as we have changed the value of CC since the build.
+export CC=$(basename $CC)
+go build -x runtime/cgo
 
 # Run go's built-in test
 case $(uname -s) in

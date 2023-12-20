@@ -1,17 +1,17 @@
-From 00a1f6b6d042ad8855a931ff721c7696f6a95497 Mon Sep 17 00:00:00 2001
+From 26b6eaea568c103e6fb4f8f850c99b5153597e78 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Patrick=20Sodr=C3=A9?= <psodre@gmail.com>
 Date: Tue, 7 Apr 2020 21:13:14 -0400
-Subject: [PATCH 3/6] Inherit CGO_* environment variables
+Subject: [PATCH 3/8] Inherit CGO_* environment variables
 
 ---
- src/cmd/go/internal/work/exec.go | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ src/cmd/go/internal/work/exec.go | 33 +++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
 diff --git a/src/cmd/go/internal/work/exec.go b/src/cmd/go/internal/work/exec.go
-index ac80f503cd..ba02139c57 100644
+index 13d2a78..5539eb8 100644
 --- a/src/cmd/go/internal/work/exec.go
 +++ b/src/cmd/go/internal/work/exec.go
-@@ -2661,6 +2661,32 @@ func (b *Builder) gccArchArgs() []string {
+@@ -3119,6 +3119,37 @@ func (b *Builder) gccArchArgs() []string {
  	return nil
  }
  
@@ -25,6 +25,11 @@ index ac80f503cd..ba02139c57 100644
 +		case "linux":
 +			if key == "LDFLAGS" {
 +				return value + " -Wl,--no-gc-sections"
++			}
++			if key == "CPPFLAGS" {
++				if sysroot, ok := os.LookupEnv("CONDA_BUILD_SYSROOT"); ok {
++					return value + " -isysroot " + sysroot
++				}
 +			}
 +		case "darwin":
 +			if key == "CPPFLAGS" {
@@ -44,7 +49,7 @@ index ac80f503cd..ba02139c57 100644
  // envList returns the value of the given environment variable broken
  // into fields, using the default value when the variable is empty.
  //
-@@ -2706,7 +2732,7 @@ func buildFlags(name, defaults string, fromPackage []string, check func(string,
+@@ -3162,7 +3193,7 @@ func buildFlags(name, defaults string, fromPackage []string, check func(string,
  	if err := check(name, "#cgo "+name, fromPackage); err != nil {
  		return nil, err
  	}
@@ -54,5 +59,4 @@ index ac80f503cd..ba02139c57 100644
  
  var cgoRe = lazyregexp.New(`[/\\:]`)
 -- 
-2.34.1
-
+2.39.2 (Apple Git-143)
