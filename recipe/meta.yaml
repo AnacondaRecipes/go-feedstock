@@ -34,7 +34,7 @@ source:
     # sha256: 49e394ab92bc6fa3df3d27298ddf3e4491f99477bee9dd4934525a526f3a391c  # [osx and arm64]
 
     url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz  # [osx]
-    sha256: 656ba058e137e36988bbf4ba06a313932f971e9cba268d50b6cfd66d029549a7  # [osx]
+    sha256: 796fd05e8741f6776c505eb201922864f2e32991679b639d9fcb524dbe300c0d  # [osx]
 
 build:
   number: 0
