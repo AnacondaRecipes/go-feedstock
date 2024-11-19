@@ -19,8 +19,13 @@ go env
 # Run go's built-in test
 case $(uname -s) in
   Darwin)
-    # Expect PASS
-    go tool dist test -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
+    if [[ $(uname -m) != arm64 ]]; then
+        # Use -k (keep going) because nocgo tests can "panic: test timed out after 10m0s" on osx-64
+        go tool dist test -k -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
+    else
+        # Expect PASS
+        go tool dist test -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
+    fi
     # Occasionally FAILS
     go tool dist test -v -no-rebuild -run='^go_test:net/http$' || true
     go tool dist test -v -no-rebuild -run='^go_test:runtime$' || true
