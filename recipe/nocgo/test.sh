@@ -20,8 +20,8 @@ go env
 case $(uname -s) in
   Darwin)
     if [[ $(uname -m) != arm64 ]]; then
-        # Use -timeout 0 because nocgo tests can "panic: test timed out after 10m0s"
-        go tool dist test -timeout 0 -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
+        # Use -k (keep going) because nocgo tests can "panic: test timed out after 10m0s"
+        go tool dist test -k -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
     else
         # Expect PASS
         go tool dist test -v -no-rebuild -run='!^go_test:net/http|go_test:runtime|go_test:time$'
