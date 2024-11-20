@@ -2,3 +2,6 @@
 build_parameters:
   - ""
 
+# Use Ventura because go test command will panic with a message "test timed out after 10m0s"
+extra_labels_for_os:
+  osx-64: [ventura]
