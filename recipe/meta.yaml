@@ -89,6 +89,8 @@ outputs:
     test:
       requires:
         - {{ compiler('c') }}        # [unix and cgo]
+        # cmd/cgo/internal/testfortran/fortran_test.go:39:21: undefined: strings
+        - {{ compiler('fortran') }}  # [osx and cgo]
         - binutils                   # [linux and cgp]
         - {{ compiler('m2w64_c') }}  # [win and cgo]
         - git  # [linux]
