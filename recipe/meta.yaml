@@ -11,7 +11,8 @@ source:
     sha256: e81a362f51aee2125722b018e46714e6a055a1954283414c0f937e737013db22
     patches:
       # Please see patches/README.md for more details
-      # The fortran test panics on osx so this patch skipped
+      # The fortran test panics on osx so this patch skipped:
+      # cmd/cgo/internal/testfortran/fortran_test.go:39:21: undefined: strings
       - patches/0001-Fix-cgo_fortran-test-setup-for-conda.patch  # [not osx]
       - patches/0002-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch
       - patches/0003-Inherit-CGO_-environment-variables.patch
@@ -90,8 +91,6 @@ outputs:
     test:
       requires:
         - {{ compiler('c') }}        # [unix and cgo]
-        # cmd/cgo/internal/testfortran/fortran_test.go:39:21: undefined: strings
-        - {{ compiler('fortran') }}  # [osx and cgo]
         - binutils                   # [linux and cgp]
         - {{ compiler('m2w64_c') }}  # [win and cgo]
         - git  # [linux]
