@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export CGO_ENABLED=${CGO_ENABLED}
 export GOOS=${GOOS}
 export GOARCH=${GOARCH}

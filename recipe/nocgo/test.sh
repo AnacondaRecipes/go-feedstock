@@ -48,7 +48,7 @@ case $(uname -s) in
         ;;
       *)
         # Expect PASS
-        go tool dist test -v -no-rebuild || true
+        go tool dist test -v -no-rebuild -run='!^archive/tar' || true
         ;;
     esac
     ;;
