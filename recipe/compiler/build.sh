@@ -2,10 +2,7 @@
 
 set -exuo pipefail
 
-if [[ "${target_platform}" == "osx-64" ]]; then
-  export GOOS=darwin
-  export GOARCH=amd64
-elif [[ "${target_platform}" == "osx-arm64" ]]; then
+if [[ "${target_platform}" == "osx-arm64" ]]; then
   export GOOS=darwin
   export GOARCH=arm64
 elif [[ "${target_platform}" == "linux-64" ]]; then
