@@ -27,27 +27,15 @@ if [[ ${CGO_ENABLED} == 1 ]]; then
       export CC_FOR_linux_amd64=$(basename $CC_FOR_BUILD)
       export CXX_FOR_linux_amd64=$(basename $CXX_FOR_BUILD)
     fi
-    # There is no easy way to drop CGO_CFLAGS when compiling go
-    # for the build platform during the bootstrapping process
-    if [[ "${target_platform}" == "linux-ppc64le" ]]; then
-      export CGO_CFLAGS="${CGO_CFLAGS/-mtune=power8 /}"
-      export CGO_CFLAGS="${CGO_CFLAGS/-mcpu=power8 /}"
-    fi
   fi
 fi
 
-if [[ "${target_platform}" == "osx-64" ]]; then
-  export GOOS=darwin
-  export GOARCH=amd64
-elif [[ "${target_platform}" == "osx-arm64" ]]; then
+if [[ "${target_platform}" == "osx-arm64" ]]; then
   export GOOS=darwin
   export GOARCH=arm64
 elif [[ "${target_platform}" == "linux-aarch64" ]]; then
   export GOOS=linux
   export GOARCH=arm64
-elif [[ "${target_platform}" == "linux-ppc64le" ]]; then
-  export GOOS=linux
-  export GOARCH=ppc64le
 elif [[ "${target_platform}" == "linux-64" ]]; then
   export GOOS=linux
   export GOARCH=amd64
@@ -65,6 +53,11 @@ popd
 
 # Don't need the cached build objects
 rm -fr ${GOROOT}/pkg/obj
+
+# Removing on linux due to missing 32 bit glibc
+if [[ "${target_platform}" == linux* ]]; then
+  find ${GOROOT} -name gcc-386-freebsd-exec -type f -delete
+fi
 
 # Don't need the test files from the source
 find ${GOROOT}/src -type d -name "testdata" -exec rm -rf \;
