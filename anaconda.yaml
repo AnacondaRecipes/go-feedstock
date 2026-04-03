@@ -1,8 +1,8 @@
 anaconda_config_version: 1
 upstream_sources:
   - webpage:
-      url: https://go.dev/dl/go{}.src.tar.gz
-      regex: (?:.*)go(.*)\.src\.tar\.gz
+      url: https://golang.org/dl/
+      regex: go([\d.]+)\.src\.tar\.gz
     packages:
       - go
       - go-cgo
