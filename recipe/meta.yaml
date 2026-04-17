@@ -32,7 +32,7 @@ source:
     sha256: 32af1522bf3e3ff3975864780a429cc0b41d190ec7bf90faa661d6d64566e7af  # [osx]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: {{ name }}-{{ go_variant_str }}
