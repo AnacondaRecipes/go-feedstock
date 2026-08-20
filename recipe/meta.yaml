@@ -1,5 +1,5 @@
 {% set name = "go" %}
-{% set version = "1.26.6" %}
+{% set version = "1.27.0" %}
 
 package:
   name: {{ name }}-{{ go_variant_str }}-split
@@ -8,7 +8,7 @@ package:
 source:
   - folder: go
     url: https://dl.google.com/{{ name }}/go{{ version }}.src.tar.gz
-    sha256: a0721c54c688901448d77ad9b3ec7ea7c474730755ff891382e92ecb93ff2cb1
+    sha256: 7002403d7cc44529ef6d26f69a44818263395ead7c16c05a5808ae047ebeb0e5
     patches:
       # Please see patches/README.md for more details
       - patches/0001-Fix-cgo_fortran-test-setup-for-conda.patch
@@ -20,14 +20,11 @@ source:
   # Update this with a release from https://go.dev/dl/
   - folder: go-bootstrap
     url: https://go.dev/dl/go{{ version }}.linux-arm64.tar.gz  # [linux and aarch64]
-    sha256: d0507e9e9d7fe012aae570108cbd76c15de879e17130ab8cb90d4d7445cb1f2e  # [linux and aarch64]
-
+    sha256: 90493b3bbd5e10f91d12153198bf1994fd756399b4fec93b49b0c6e2acdeeb3e
     url: https://go.dev/dl/go{{ version }}.linux-amd64.tar.gz  # [linux and x86_64]
     sha256: 708effb774be8237570d0add163225abbdfaf4fca28b2611df167beba4feef89  # [linux and x86_64]
-
     url: https://go.dev/dl/go{{ version }}.windows-amd64.zip  # [win64]
     sha256: 5b6c5b556525810463b5c897b50dc7a82d6a3dc0bfaf55d990a7e9f31d6b2318  # [win64]
-
     url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz  # [osx]
     sha256: 2dc95ce4675829f2df0e86b28bcef3283635902062a5f0580ca659bf570f3204  # [osx]
 
@@ -39,63 +36,59 @@ outputs:
     build:
       binary_relocation: false
       detect_binary_files_with_prefix: false
-      force_ignore_keys:    # [win]
-        - c_compiler        # [win]
-        - cxx_compiler      # [win]
+      force_ignore_keys:  # [win]
+        - c_compiler  # [win]
+        - cxx_compiler  # [win]
         - fortran_compiler  # [win]
-      # test data links to these DSOs
+    # test data links to these DSOs
     requirements:
       run:
         - {{ pin_subpackage(name, exact=true) }}
-        - {{ compiler('c') }}        # [unix and cgo]
+        - {{ compiler('c') }}  # [unix and cgo]
         - {{ compiler('ucrt64_c') }}  # [win and cgo]
     test:
       commands:
         - go help
-
   - name: {{ name }}
-    script: {{ go_variant_str }}/build.sh   # [unix]
+    script: {{ go_variant_str }}/build.sh  # [unix]
     script: {{ go_variant_str }}/build.bat  # [win]
     build:
       binary_relocation: false
       detect_binary_files_with_prefix: false
       missing_dso_whitelist:
-        - "*/libc.so.6"                # [linux]
-        - "*/libstdc++.so.6"           # [linux]
-        - $RPATH/libc.so.6             # [linux]
-        - $RPATH/libstdc++.so.6        # [linux]
-        - $RPATH/libtiff.so.6          # [linux]
-        - /usr/lib/libSystem.B.dylib   # [osx]
+        - "*/libc.so.6"  # [linux]
+        - "*/libstdc++.so.6"  # [linux]
+        - $RPATH/libc.so.6  # [linux]
+        - $RPATH/libstdc++.so.6  # [linux]
+        - $RPATH/libtiff.so.6  # [linux]
+        - /usr/lib/libSystem.B.dylib  # [osx]
         - $SYSROOT\System32\winmm.dll  # [win]
-      run_exports:                            # [unix and cgo]
-        strong:                               # [unix and cgo]
+      run_exports:  # [unix and cgo]
+        strong:  # [unix and cgo]
           - __glibc >={{ c_stdlib_version }}  # [linux and cgo]
-          - __osx >=12                        # [osx and cgo]
+          - __osx >=12  # [osx and cgo]
     requirements:
       build:
-        - {{ stdlib("c") }}          # [unix and cgo]
-        - {{ compiler('c') }}        # [unix and cgo]
-        - {{ compiler('cxx') }}      # [unix and cgo]
+        - {{ stdlib("c") }}  # [unix and cgo]
+        - {{ compiler('c') }}  # [unix and cgo]
+        - {{ compiler('cxx') }}  # [unix and cgo]
         - {{ compiler('fortran') }}  # [unix and cgo]
-
-        - {{ compiler('ucrt64_c') }}        # [win and cgo]
-        - {{ compiler('ucrt64_cxx') }}      # [win and cgo]
+        - {{ compiler('ucrt64_c') }}  # [win and cgo]
+        - {{ compiler('ucrt64_cxx') }}  # [win and cgo]
         - {{ compiler('ucrt64_fortran') }}  # [win and cgo]
       run:
         - _go_select =={{ go_variant_ver }}={{ go_variant_str }}
       run_constrained:
         # TODO: Move to run section once conda/conda#9845 is fixed
-
-        - {{ pin_compatible(compiler('c')) }}        # [unix and cgo]
-        - {{ pin_compatible(compiler('cxx')) }}      # [unix and cgo]
+        - {{ pin_compatible(compiler('c')) }}  # [unix and cgo]
+        - {{ pin_compatible(compiler('cxx')) }}  # [unix and cgo]
         - {{ pin_compatible(compiler('fortran')) }}  # [unix and cgo]
-
-        - {{ pin_compatible(compiler('ucrt64_c')) }}        # [win and cgo]
-        - {{ pin_compatible(compiler('ucrt64_cxx')) }}      # [win and cgo]
+        - {{ pin_compatible(compiler('ucrt64_c')) }}  # [win and cgo]
+        - {{ pin_compatible(compiler('ucrt64_cxx')) }}  # [win and cgo]
         - {{ pin_compatible(compiler('ucrt64_fortran')) }}  # [win and cgo]
     test:
       requires:
-        - {{ compiler('c') }}        # [unix and cgo]
+        - {{ compiler('c') }}  # [unix and cgo]
         - {{ compiler('ucrt64_c') }}  # [win and cgo]
         - git  # [unix]
         - binutils  # [osx]
@@ -103,9 +96,9 @@ outputs:
       files:
         - {{ go_variant_str }}
       commands:
-        - chmod +x {{ go_variant_str }}/test.sh      # [unix]
-        - ./{{ go_variant_str }}/test.sh             # [unix]
-        - {{ go_variant_str }}/test.bat              # [win]
+        - chmod +x {{ go_variant_str }}/test.sh  # [unix]
+        - ./{{ go_variant_str }}/test.sh  # [unix]
+        - {{ go_variant_str }}/test.bat  # [win]
     about:
       home: https://go.dev
       license: BSD-3-Clause
