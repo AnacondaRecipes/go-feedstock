@@ -21,8 +21,10 @@ source:
       - patches/0008-Mark-ftree-as-a-safe-compiler-flag.patch
       # https://github.com/golang/go/issues/68088
       - patches/0009-cmd-link-don-t-let-dsymutil-delete-our-temp-director.patch
+      # https://github.com/golang/go/issues/71077 (backport of CL 639655)
+      - patches/0010-crypto-tls-fix-Config.Time-in-tests-using-expired-certificates.patch
   # Update this with a release from https://go.dev/dl/
-  - folder: go-bootstrap  # [aarch64 or ppc64le or osx or win64 or (linux and x86_64)]
+  - folder: go-bootstrap  # [aarch64 or ppc64le or osx or win64 or (win and arm64) or (linux and x86_64)]
     url: https://go.dev/dl/go{{ version }}.linux-arm64.tar.gz  # [aarch64]
     sha256: 2ca2d70dc9c84feef959eb31f2a5aac33eefd8c97fe48f1548886d737bffabd4  # [aarch64]
 
@@ -32,14 +34,17 @@ source:
     url: https://go.dev/dl/go{{ version }}.windows-amd64.zip  # [win64]
     sha256: 924655193634bfcdf7ec7a34589e0d73458741998a59e4155a929ce85f81af2d  # [win64]
 
-    # url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz  # [osx and arm64]
-    # sha256: c04ee7bdc0e65cf17133994c40ee9bdfa1b1dc9587b3baedaea39affdb8e5b49  # [osx and arm64]
+    url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz  # [osx and arm64]
+    sha256: c04ee7bdc0e65cf17133994c40ee9bdfa1b1dc9587b3baedaea39affdb8e5b49  # [osx and arm64]
 
-    url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz  # [osx]
-    sha256: 796fd05e8741f6776c505eb201922864f2e32991679b639d9fcb524dbe300c0d  # [osx]
+    url: https://go.dev/dl/go{{ version }}.darwin-amd64.tar.gz  # [osx and x86_64]
+    sha256: 796fd05e8741f6776c505eb201922864f2e32991679b639d9fcb524dbe300c0d  # [osx and x86_64]
+
+    url: https://go.dev/dl/go{{ version }}.windows-arm64.zip  # [win and arm64]
+    sha256: 74fb3a74cdf0cf6cfea664d3746aea423a3e4a8952b749920f8013d735a59589  # [win and arm64]
 
 build:
-  number: 0
+  number: 2
   skip: True  # [linux and s390x]
   binary_relocation: false
   detect_binary_files_with_prefix: false
@@ -54,13 +59,12 @@ build:
     - $SYSROOT\System32\winmm.dll  # [win]
 
 requirements:
-  build:
-    - m2-patch  # [win]
-    - patch     # [unix]
   run:
     - {{ pin_subpackage(name, exact=true) }}
     - {{ compiler('c') }}  # [unix and cgo]
-    - {{ compiler('m2w64_c') }}  # [win and cgo]
+    - {{ compiler('m2w64_c') }}  # [win and x86_64 and cgo]
+    - clangarm64-clang-toolchain_win-arm64  # [win and arm64 and cgo]
+    - clangarm64-flang  # [win and arm64 and cgo]
 
 test:
   commands:
@@ -76,9 +80,11 @@ outputs:
         - {{ compiler('cxx') }}      # [unix and cgo]
         - {{ compiler('fortran') }}  # [unix and cgo]
 
-        - {{ compiler('m2w64_c') }}        # [win and cgo]
-        - {{ compiler('m2w64_cxx') }}      # [win and cgo]
-        - {{ compiler('m2w64_fortran') }}  # [win and cgo]
+        - {{ compiler('m2w64_c') }}        # [win and x86_64 and cgo]
+        - {{ compiler('m2w64_cxx') }}      # [win and x86_64 and cgo]
+        - {{ compiler('m2w64_fortran') }}  # [win and x86_64 and cgo]
+        - clangarm64-clang-toolchain_win-arm64  # [win and arm64 and cgo]
+        - clangarm64-flang  # [win and arm64 and cgo]
       run:
         - _go_select =={{ go_variant_ver }}={{ go_variant_str }}
       run_constrained:
@@ -86,14 +92,18 @@ outputs:
         - {{ pin_compatible(compiler('cxx')) }}      # [unix and cgo]
         - {{ pin_compatible(compiler('fortran')) }}  # [unix and cgo]
 
-        - {{ pin_compatible(compiler('m2w64_c')) }}        # [win and cgo]
-        - {{ pin_compatible(compiler('m2w64_cxx')) }}      # [win and cgo]
-        - {{ pin_compatible(compiler('m2w64_fortran')) }}  # [win and cgo]
+        - {{ pin_compatible(compiler('m2w64_c')) }}        # [win and x86_64 and cgo]
+        - {{ pin_compatible(compiler('m2w64_cxx')) }}      # [win and x86_64 and cgo]
+        - {{ pin_compatible(compiler('m2w64_fortran')) }}  # [win and x86_64 and cgo]
+        - clangarm64-clang-toolchain_win-arm64 >=22.1.8  # [win and arm64 and cgo]
+        - clangarm64-flang >=22.1.8  # [win and arm64 and cgo]
     test:
       requires:
         - {{ compiler('c') }}        # [unix and cgo]
         - binutils                   # [linux and cgp]
-        - {{ compiler('m2w64_c') }}  # [win and cgo]
+        - {{ compiler('m2w64_c') }}  # [win and x86_64 and cgo]
+        - clangarm64-clang-toolchain_win-arm64  # [win and arm64 and cgo]
+        - clangarm64-flang  # [win and arm64 and cgo]
         - git  # [linux]
         - perl
       files:
