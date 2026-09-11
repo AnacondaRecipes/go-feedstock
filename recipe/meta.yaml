@@ -57,9 +57,6 @@ build:
     - $SYSROOT\System32\winmm.dll  # [win]
 
 requirements:
-  build:
-    - m2-patch  # [win]
-    - patch     # [unix]
   run:
     - {{ pin_subpackage(name, exact=true) }}
     - {{ compiler('c') }}  # [unix and cgo]
