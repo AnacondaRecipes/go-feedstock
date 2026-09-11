@@ -21,6 +21,8 @@ source:
       - patches/0008-Mark-ftree-as-a-safe-compiler-flag.patch
       # https://github.com/golang/go/issues/68088
       - patches/0009-cmd-link-don-t-let-dsymutil-delete-our-temp-director.patch
+      # https://github.com/golang/go/issues/71077 (backport of CL 639655)
+      - patches/0010-crypto-tls-fix-Config.Time-in-tests-using-expired-certificates.patch
   # Update this with a release from https://go.dev/dl/
   - folder: go-bootstrap  # [aarch64 or ppc64le or osx or win64 or (win and arm64) or (linux and x86_64)]
     url: https://go.dev/dl/go{{ version }}.linux-arm64.tar.gz  # [aarch64]
@@ -42,7 +44,7 @@ source:
     sha256: 74fb3a74cdf0cf6cfea664d3746aea423a3e4a8952b749920f8013d735a59589  # [win and arm64]
 
 build:
-  number: 1
+  number: 2
   skip: True  # [linux and s390x]
   binary_relocation: false
   detect_binary_files_with_prefix: false
