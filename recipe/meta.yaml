@@ -54,7 +54,8 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage(name, exact=true) }}
-        - {{ compiler('c') }}        # [unix and cgo]
+        - {{ stdlib('c') }}           # [unix and cgo]
+        - {{ compiler('c') }}         # [unix and cgo]
         - {{ compiler('ucrt64_c') }}  # [win and x86_64 and cgo]
         - clangarm64-clang-toolchain_win-arm64  # [win and arm64 and cgo]
         - clangarm64-flang  # [win and arm64 and cgo]
