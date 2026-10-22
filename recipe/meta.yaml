@@ -1,5 +1,5 @@
 {% set name = "go" %}
-{% set version = "1.27.2" %}
+{% set version = "1.27.3" %}
 
 package:
   name: {{ name }}-{{ go_variant_str }}-split
@@ -8,7 +8,7 @@ package:
 source:
   - folder: go
     url: https://dl.google.com/{{ name }}/go{{ version }}.src.tar.gz
-    sha256: 03495da2ba64894d40f5c4992e49454fa78b50690604ff92b6afff5081b76e62
+    sha256: 6e7749035cf360f06b2575d162ea79df9fda8ef671889e5c375f8e50777f26bb
     patches:
       # Please see patches/README.md for more details
       - patches/0001-Fix-cgo_fortran-test-setup-for-conda.patch
@@ -24,19 +24,19 @@ source:
   # Update this with a release from https://go.dev/dl/
   - folder: go-bootstrap
     url: https://go.dev/dl/go{{ version }}.linux-arm64.tar.gz  # [linux and aarch64]
-    sha256: 94f3e30b8e374bc285e7dadc11e0865726b9bc6e85b841ccceaabc0214c6b7c8  # [linux and aarch64]
+    sha256: a06e99309dbcbdca1a8ccd2282c3ee146e55930886e26b4f1193269587165f49  # [linux and aarch64]
 
     url: https://go.dev/dl/go{{ version }}.linux-amd64.tar.gz  # [linux and x86_64]
-    sha256: ecbadb99091a3f46e31f5f934b068b1864eafa7995211b39eaddf76996045fe5  # [linux and x86_64]
+    sha256: 65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40  # [linux and x86_64]
 
     url: https://go.dev/dl/go{{ version }}.windows-amd64.zip  # [win64]
-    sha256: 1314008898bd40df77af4b014f777f08873dbdfbcd3d92308728ee03304fe04f  # [win64]
+    sha256: f26081f438319757f8a1b46d7d0b2c5ec7583d4038e485e0aa725cfde7885fff  # [win64]
 
     url: https://go.dev/dl/go{{ version }}.darwin-arm64.tar.gz  # [osx]
-    sha256: 76812b213b1b2302c978d28fa52fa92d541704b9e7d9d5db8002c50e4018c4c5  # [osx]
+    sha256: dd3908cf20959d798c1e06ebe5b72213f0505ce01373b40ce3110975a6cd99c2  # [osx]
 
     url: https://go.dev/dl/go{{ version }}.windows-arm64.zip  # [win and arm64]
-    sha256: 5c4b294f23b558619ae8a4aa94d023e3bca03f52c8398bb41b9026002b0013de  # [win and arm64]
+    sha256: c507872ff21f8a7cd3c1c217b059c6f7271a4a9d8e692810ef9dd3e1f601197c  # [win and arm64]
 
 build:
   number: 0
