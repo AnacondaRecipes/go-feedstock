@@ -1,17 +1,17 @@
-From cd4e5021242f5b1a41706931c746dba2d3c789f8 Mon Sep 17 00:00:00 2001
+From d0b2250dc2573175e1d87637d918728d62417264 Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Tue, 16 May 2023 15:36:34 +0200
-Subject: [PATCH 7/7] Mark -ftree as a safe compiler flag
+Subject: [PATCH] Mark -ftree as a safe compiler flag
 
 ---
  src/cmd/go/internal/work/security.go | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/cmd/go/internal/work/security.go b/src/cmd/go/internal/work/security.go
-index 50bfd0a..7509fad 100644
+index e83ce176..17e82702 100644
 --- a/src/cmd/go/internal/work/security.go
 +++ b/src/cmd/go/internal/work/security.go
-@@ -66,6 +66,7 @@ var validCompilerFlags = []*lazyregexp.Regexp{
+@@ -82,6 +82,7 @@ var validCompilerFlags = []*lazyregexp.Regexp{
  	re(`-f(no-)?eliminate-unused-debug-types`),
  	re(`-f(no-)?exceptions`),
  	re(`-f(no-)?fast-math`),
@@ -19,9 +19,9 @@ index 50bfd0a..7509fad 100644
  	re(`-f(no-)?inline-functions`),
  	re(`-finput-charset=([^@\-].*)`),
  	re(`-f(no-)?fat-lto-objects`),
-@@ -91,6 +92,7 @@ var validCompilerFlags = []*lazyregexp.Regexp{
- 	re(`-f(no-)?visibility-inlines-hidden`),
- 	re(`-fsanitize=(.+)`),
+@@ -108,6 +109,7 @@ var validCompilerFlags = []*lazyregexp.Regexp{
+ 	re(`-fsanitize=([^@\-].*)`),
+ 	re(`-fsanitize-undefined-strip-path-components=(-)?[0-9]+`),
  	re(`-ftemplate-depth-(.+)`),
 +	re(`-ftree-vectorize`),
  	re(`-ftls-model=(global-dynamic|local-dynamic|initial-exec|local-exec)`),
