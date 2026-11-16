@@ -1,7 +1,7 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 142b751d7a207a3110cd61f6c66c76869a8901fe Mon Sep 17 00:00:00 2001
 From: conda-forge go-feedstock maintainers <noreply@conda-forge.org>
-Date: Tue, 2 Sep 2026 00:00:00 +0000
-Subject: [PATCH 9/9] Mark conda's linker flags as safe for internal linking
+Date: Wed, 2 Sep 2026 00:00:00 +0000
+Subject: [PATCH] Mark conda's linker flags as safe for internal linking
 
 Go 1.27 started running CGO_LDFLAGS through the internal-linking
 compatibility check (checkLinkerFlagsForInternalLink, added for #77768).
@@ -25,10 +25,10 @@ member) and cmd/go's cgo_suspect_flag_force_external script test.
  1 file changed, 3 insertions(+)
 
 diff --git a/src/cmd/go/internal/work/security.go b/src/cmd/go/internal/work/security.go
-index c61bf6d8..18932b28 100644
+index 8636bc44..b05cbb01 100644
 --- a/src/cmd/go/internal/work/security.go
 +++ b/src/cmd/go/internal/work/security.go
-@@ -208,6 +208,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
+@@ -243,6 +243,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
  	re(`-Wl,-Bsymbolic-functions`),
  	re(`-Wl,-O[0-9]+`),
  	re(`-Wl,-d[ny]`),
@@ -36,7 +36,7 @@ index c61bf6d8..18932b28 100644
  	re(`-Wl,--disable-new-dtags`),
  	re(`-Wl,-e[=,][a-zA-Z0-9]+`),
  	re(`-Wl,--enable-new-dtags`),
-@@ -215,6 +216,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
+@@ -250,6 +251,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
  	re(`-Wl,--(no-)?export-dynamic`),
  	re(`-Wl,-E`),
  	re(`-Wl,-framework,[^,@\-][^,]*`),
@@ -44,7 +44,7 @@ index c61bf6d8..18932b28 100644
  	re(`-Wl,--hash-style=(sysv|gnu|both)`),
  	re(`-Wl,-headerpad_max_install_names`),
  	re(`-Wl,--no-undefined`),
-@@ -226,6 +228,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
+@@ -261,6 +263,7 @@ var validLinkerFlags = []*lazyregexp.Regexp{
  	re(`-Wl,-s`),
  	re(`-Wl,-search_paths_first`),
  	re(`-Wl,-sectcreate,([^,@\-][^,]*),([^,@\-][^,]*),([^,@\-][^,]*)`),
